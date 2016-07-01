@@ -3,3 +3,22 @@
   h1 Want to add a new user?
   p to go to the create new user view, click the button below!
   a.btn.btn-lg.btn-success Add a new User!
+legend
+  h1 All Users
+table.table.table-striped.table-hover(st-table='users')
+  thead
+    //- input.form-control(st-search='' placeholder='global search ...' type='text')
+    tr
+      th ID
+      th First Name
+      th Last Name
+      th Active?
+      th Y Code
+  tbody
+    tr(ng-repeat='user in users')
+      td {{user.user_data.id}}
+        //- input(type="button" class="btn btn-tomato" value="Add" ng-click="addRepoToWatch(repo)")
+      td {{user.user_data.first_name}}
+      td {{user.user_data.last_name}}
+      td {{user.user_data.active}}
+      td {{user.user_data.y_code}}

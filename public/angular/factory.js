@@ -1,6 +1,12 @@
 angular.module('static.services', [])
-  .factory('staticFactory', ($http) => {
+  .factory('staticFactory', ($http, localStorageService) => {
     return{
-      test: "woot"
+            // local storage methods
+      getFromLocalStorage: (key) => {
+        return localStorageService.get(key)
+      },
+      setToLocalStorage: (key, value) => {
+        return localStorageService.set(key, value)
+      }
     }
   })

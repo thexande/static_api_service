@@ -1,11 +1,19 @@
 var static = angular.module('static',
-  ['static.controllers', 'static.services', 'ui.router'])
+  ['static.controllers', 'static.services', 'ui.router', 'smart-table', 'LocalStorageModule'])
 static.config(($stateProvider, $urlRouterProvider) => {
-  // $urlRouterProvider.otherwise('/dash')
+  // local storage config
+static.config(function (localStorageServiceProvider) {
+  localStorageServiceProvider
+    .setPrefix('staticAPI')
+    .setStorageType('localStorage')
+    .setNotify(true, true)
+})
+  $urlRouterProvider.otherwise('/dash')
   $stateProvider
     .state('root', {
       url: '/',
-      templateUrl: 'build/root.html'
+      templateUrl: 'build/root.html',
+      controller: 'rootController'
     })
     .state('dash', {
       url: '/dash',
@@ -19,7 +27,7 @@ static.config(($stateProvider, $urlRouterProvider) => {
     })
     .state('dash.user', {
       url: '/user',
-      templateUrl: 'build/user.html'
-      // controller: 'userController'
+      templateUrl: 'build/user.html',
+      controller: 'userController'
     });
 })
