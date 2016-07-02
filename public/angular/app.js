@@ -1,5 +1,5 @@
 var static = angular.module('static',
-  ['static.controllers', 'static.services', 'ui.router', 'smart-table', 'LocalStorageModule'])
+  ['static.controllers', 'static.services', 'ui.router', 'smart-table', 'LocalStorageModule','frapontillo.bootstrap-switch','ui.bootstrap'])
 static.config(($stateProvider, $urlRouterProvider) => {
   // local storage config
 static.config(function (localStorageServiceProvider) {

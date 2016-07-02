@@ -8,7 +8,7 @@ html( lang="en" ng-app="static")
 		meta( name='description', content='Baking Bootstrap Snippets with Jade' )
 	body( ng-app="static" )
 		// Fixed navbar
-		.navbar.navbar-default.navbar-fixed-top(role='navigation')
+		.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
 			.navbar-header
 				button.navbar-toggle(type='button', data-toggle='collapse', data-target='.navbar-collapse')
 					span.sr-only Toggle navigation
@@ -22,4 +22,4 @@ html( lang="en" ng-app="static")
 						a(ui-sref="dash.users") Users
 					li
 						a(ui-sref='dash.user') Create User
-		.container( ui-view="" )
+		.container(ui-view="")

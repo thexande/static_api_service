@@ -1,1 +1,53 @@
-<br><br><br>
+// Modal
+.modal-header
+  button.close(type='button', data-dismiss='modal')
+    span(aria-hidden='true') ×
+    span.sr-only Close
+  h4#myModalLabel.modal-title
+    | Modal title
+// Modal Body
+.modal-body
+  form.form-horizontal(role='form')
+    .form-group
+      label.col-sm-2.control-label(for='inputEmail3') Email
+      .col-sm-10
+        input#inputEmail3.form-control(type='email', placeholder='Email')
+    .form-group
+      label.col-sm-2.control-label(for='inputEmail3') Email
+      .col-sm-10
+        input#inputEmail3.form-control(type='email', placeholder='Email')
+    .form-group
+      label.col-sm-2.control-label(for='inputEmail3') Email
+      .col-sm-10
+        input#inputEmail3.form-control(type='email', placeholder='Email')
+    .form-group
+      label.col-sm-2.control-label(for='inputPassword3') Password
+      .col-sm-10
+        input(bs-switch
+               ng-model="isSelected"
+               type="checkbox"
+               switch-active="{{ isActive }}"
+               switch-on-text="{{ onText }}"
+               switch-off-text="{{ offText }}"
+               switch-on-color="{{ onColor }}"
+               switch-off-color="{{ offColor }}"
+               switch-animate="{{ animate }}"
+               switch-size="{{ size }}"
+               switch-label="{{ label }}"
+               switch-icon="{{ icon }}"
+               switch-radio-off="{{ radioOff }}"
+               switch-label-width="{{ labelWidth }}"
+               switch-handle-width="{{ handleWidth }}"
+               switch-wrapper="{{ wrapper }}"
+               ng-true-value="'yep'"
+               ng-false-value="'nope'"
+               switch-inverse="{{ !inverse }}")
+    .form-group
+      .col-sm-offset-2.col-sm-10
+        button.btn.btn-default(type='submit') Sign in
+// Modal Footer
+.modal-footer
+  button.btn.btn-default(type='button', data-dismiss='modal')
+    | Close
+  button.btn.btn-primary(type='button')
+    | Save changes

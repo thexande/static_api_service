@@ -2,10 +2,11 @@
 .jumbotron
   h1 Want to add a new user?
   p to go to the create new user view, click the button below!
-  a.btn.btn-lg.btn-success Add a new User!
+  div(ng-controller='ModalDemoCtrl')
+    button.btn.btn-lg.btn-success(ng-click="open('lg')") Add a new User!
 legend
   h1 All Users
-table.table.table-striped.table-hover(st-table='users')
+table.table.table-striped.table-hover
   thead
     //- input.form-control(st-search='' placeholder='global search ...' type='text')
     tr
@@ -14,6 +15,8 @@ table.table.table-striped.table-hover(st-table='users')
       th Last Name
       th Active?
       th Y Code
+      th Edit
+      th Delete
   tbody
     tr(ng-repeat='user in users')
       td {{user.user_data.id}}
@@ -22,3 +25,14 @@ table.table.table-striped.table-hover(st-table='users')
       td {{user.user_data.last_name}}
       td {{user.user_data.active}}
       td {{user.user_data.y_code}}
+      td
+        input.btn.btn-info(type="button" value="Edit")
+      td
+        input.btn.btn-danger(type="button" value="Remove")
+//- modalInstance
+div(ng-controller='ModalDemoCtrl')
+  button.btn.btn-default(type='button', ng-click='open()') Open me!
+  button.btn.btn-default(type='button', ng-click="open('lg')") Large modal
+  button.btn.btn-default(type='button', ng-click="open('sm')") Small modal
+  button.btn.btn-default(type='button', ng-click='toggleAnimation()') Toggle Animation ({{ animationsEnabled }})
+  div(ng-show='selected') Selection from a modal: {{ selected }}
