@@ -1,5 +1,4 @@
-{
-  users:[{
+[{
       "user_data": {
           "id": 0,
           "first_name": "Marina",
@@ -160,4 +159,3 @@
           "y_code": "ml4i"
       }
   }]
-}

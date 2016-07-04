@@ -1,30 +1,54 @@
 // Modal
-.modal-header
-  button.close(type='button', data-dismiss='modal')
-    span(aria-hidden='true') ×
-    span.sr-only Close
-  h4#myModalLabel.modal-title
-    | Modal title
-// Modal Body
-.modal-body
-  form.form-horizontal(role='form')
-    .form-group
-      label.col-sm-2.control-label(for='inputEmail3') Email
+form#new_user_form.form-horizontal(
+name="newUserForm",
+role='form',
+ng-submit="createNewUser(newUserForm.$valid)",
+novalidate)
+  .modal-header
+    button.close(type='button', data-dismiss='modal')
+      span(aria-hidden='true' ng-click="cancel()") ×
+      span.sr-only Close
+    h4#myModalLabel.modal-title
+      | Lets add a new user!
+  // Modal Body
+  .modal-body
+    .form-group(ng-class="{ 'has-error' : newUserForm.first_name.$invalid && newUserForm.first_name.$touched }")
+      label.col-sm-2.control-label(for='first_name') First Name
       .col-sm-10
-        input#inputEmail3.form-control(type='email', placeholder='Email')
-    .form-group
-      label.col-sm-2.control-label(for='inputEmail3') Email
+        input#first_name.form-control(
+          name="first_name",
+          required,
+          type='text',
+          placeholder='First Name',
+          ng-model="user.first_name")
+        small.text-muted(ng-show="newUserForm.first_name.$invalid && newUserForm.first_name.$touched")
+          | Please enter a first name for the user.
+    .form-group(ng-class="{ 'has-error' : newUserForm.last_name.$invalid && newUserForm.last_name.$touched }")
+      label.col-sm-2.control-label(for='last_name') Last Name
       .col-sm-10
-        input#inputEmail3.form-control(type='email', placeholder='Email')
-    .form-group
-      label.col-sm-2.control-label(for='inputEmail3') Email
+        input#last_name.form-control(
+          name="last_name",
+          required,
+          type='text',
+          placeholder='Last Name',
+          ng-model="user.last_name")
+        small.text-muted(ng-show="newUserForm.last_name.$invalid && newUserForm.last_name.$touched")
+          | Please enter a last name for the user.
+    .form-group(ng-class="{ 'has-error' : newUserForm.y_code.$invalid && newUserForm.y_code.$touched }")
+      label.col-sm-2.control-label(for='y_code') Y Code
       .col-sm-10
-        input#inputEmail3.form-control(type='email', placeholder='Email')
+        input#y_code.form-control(
+          name="y_code"
+          required,
+          type='text',
+          placeholder='Y Code',
+          ng-model="user.y_code")
+        small.text-muted(ng-show="newUserForm.y_code.$invalid && newUserForm.y_code.$touched")
+          | Please enter a y code for the user.
     .form-group
-      label.col-sm-2.control-label(for='inputPassword3') Password
+      label.col-sm-2.control-label(for='is_active') Is User Active?
       .col-sm-10
-        input(bs-switch
-               ng-model="isSelected"
+        input#is_active(bs-switch
                type="checkbox"
                switch-active="{{ isActive }}"
                switch-on-text="{{ onText }}"
@@ -39,15 +63,13 @@
                switch-label-width="{{ labelWidth }}"
                switch-handle-width="{{ handleWidth }}"
                switch-wrapper="{{ wrapper }}"
-               ng-true-value="'yep'"
-               ng-false-value="'nope'"
-               switch-inverse="{{ !inverse }}")
-    .form-group
-      .col-sm-offset-2.col-sm-10
-        button.btn.btn-default(type='submit') Sign in
+               ng-true-value= '1'
+               ng-false-value= '0'
+               ng-model="user.is_active")
+
 // Modal Footer
 .modal-footer
-  button.btn.btn-default(type='button', data-dismiss='modal')
+  button.btn.btn-default(type='button', data-dismiss='modal', ng-click="cancel()")
     | Close
-  button.btn.btn-primary(type='button')
-    | Save changes
+  button.btn.btn-success(type="submit")
+    | Create User!

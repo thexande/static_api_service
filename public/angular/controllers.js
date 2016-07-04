@@ -12,7 +12,9 @@ angular.module('static.controllers', [])
     console.log("in dash controller");
     $http.get('/userList')
       .then((res) => {
-        staticFactory.setToLocalStorage('users', res.data)
+        console.log("data here");
+        console.log(res.data[0].users);
+        staticFactory.setToLocalStorage('users', res.data[0].users)
         console.log(res)
         // $scope.users = res.data
       })
@@ -57,16 +59,31 @@ angular.module('static.controllers', [])
 
 
 })
-.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, items) {
+.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, $log, $http) {
+  // form update to create new user
+  $scope.user = {}
+  $scope.createNewUser = function(isValid) {
+    console.log("woot");
+    if(!isValid){
+      alert("invalid")
+    }
 
-  $scope.items = items;
-  $scope.selected = {
-    item: $scope.items[0]
-  };
-
-  $scope.ok = function () {
-    $uibModalInstance.close($scope.selected.item);
-  };
+    // $scope.user = angular.copy(user)
+    // lets post and create our new user
+    // $http({
+    //   method: "POST",
+    //   url: "/userList",
+    //   data: $scope.user
+    // }).then(function(resp){
+    //   console.log(resp);
+    // })
+  }
+  //
+  // $scope.ok = function (user) {
+  //   console.log(user);
+  //   $scope.updateNewUser(user)
+  //   console.log($scope.user);
+  // };
 
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
@@ -77,7 +94,7 @@ angular.module('static.controllers', [])
   $scope.offText = 'Disabled';
   $scope.onColor = 'info'
   $scope.offColor = 'danger'
-  $scope.isActive = true;
+  $scope.user.is_active = 1;
   $scope.size = 'large';
   $scope.animate = true;
   $scope.radioOff = true;
