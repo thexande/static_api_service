@@ -5,18 +5,19 @@ angular.module('static.controllers', [])
 
   })
   .controller('usersController', function($scope, $http, $state, staticFactory){
-    $scope.users = (staticFactory.getFromLocalStorage('users'))
-    console.log($scope.users);
+    $scope.users = staticFactory.getFromLocalStorage('users')
+    // watch users in local storage to update
+    $scope.$on("LocalStorageModule.notification.setitem", function (key, newVal, type) {
+      console.log("LocalStorageModule.notification.setitem", key, newVal, type);
+      $scope.users = staticFactory.getFromLocalStorage('users')
+      
+    })
   })
   .controller('dashController', function($scope, $http, $state, staticFactory){
-    console.log("in dash controller");
-    $http.get('/userList')
+    staticFactory.getAllUsers()
       .then((res) => {
-        console.log("data here");
-        console.log(res.data[0].users);
-        staticFactory.setToLocalStorage('users', res.data[0].users)
-        console.log(res)
-        // $scope.users = res.data
+        // insert data into local storage for retrevial in view
+        staticFactory.setToLocalStorage('users', res.data)
       })
   })
   .controller('userController', function($scope, $http, $state, $log, $uibModal){
@@ -26,13 +27,8 @@ angular.module('static.controllers', [])
 
   // modal testing
   .controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
-
-  $scope.items = ['item1', 'item2', 'item3'];
-
   $scope.animationsEnabled = true;
-
   $scope.open = function (size) {
-
     var modalInstance = $uibModal.open({
       animation: $scope.animationsEnabled,
       templateUrl: 'build/user.html',
@@ -43,27 +39,63 @@ angular.module('static.controllers', [])
           return $scope.items;
         }
       }
-    });
-
-    modalInstance.result.then(function (selectedItem) {
-      $scope.selected = selectedItem;
-    }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
-    });
-  };
-
-  $scope.toggleAnimation = function () {
-    $scope.animationsEnabled = !$scope.animationsEnabled;
-  };
-
-
-
+    })
+  }
 })
+// modal controller for adding a new user
+.controller('ModalUserCreateCtrl', function($scope, $uibModal, $log){
+  $scope.animationsEnabled = true;
+  $scope.open = function () {
+    var modalInstance = $uibModal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'build/user.html',
+      controller: 'UserCreateInstanceCtrl',
+      size: 'lg'
+    })
+  }
+})
+.controller('UserCreateInstanceCtrl', function($scope, $uibModalInstance, $log, staticFactory){
+  // form update to create new user
+  $scope.user = {}
+  $scope.createNewUser = function(isValid) {
+    if(isValid){
+      staticFactory.createNewUser({user_data:$scope.user})
+        .then(function(resp){
+          // user created. get list of all users and update in local storage
+          staticFactory.getAllUsers().then(function(resp){
+            // reset local storage and
+            staticFactory.setToLocalStorage('users', resp.data)
+          }).then(() => {
+            $scope.cancel()
+          })
+        })
+    }
+  }
+  // modal dismiss
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  }
+  // bootstrap switch
+  $scope.isSelected = 'yep';
+  $scope.onText = 'Enabled';
+  $scope.offText = 'Disabled';
+  $scope.onColor = 'info'
+  $scope.offColor = 'danger'
+  $scope.user.is_active = 1;
+  $scope.size = 'large';
+  $scope.animate = true;
+  $scope.radioOff = true;
+  $scope.handleWidth = "auto";
+  $scope.labelWidth = "auto";
+  $scope.inverse = false;
+})
+
 .controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, $log, $http) {
   // form update to create new user
   $scope.user = {}
   $scope.createNewUser = function(isValid) {
     console.log("woot");
+    console.log($scope.user);
     if(!isValid){
       alert("invalid")
     }
@@ -101,22 +133,4 @@ angular.module('static.controllers', [])
   $scope.handleWidth = "auto";
   $scope.labelWidth = "auto";
   $scope.inverse = false;
-
-  $scope.$watch('isSelected', function() {
-    $log.info('Selection changed.');
-  });
-
-  $scope.toggle = function() {
-    $scope.isSelected = $scope.isSelected === 'yep' ? 'nope' : 'yep';
-  };
-
-  $scope.setUndefined = function() {
-    $scope.isSelected = undefined;
-  };
-
-  $scope.toggleActivation = function() {
-    $scope.isActive = !$scope.isActive;
-  }
-
-
 });

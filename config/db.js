@@ -3,7 +3,7 @@ mongoose.connect('mongodb://user:flyingmonky@ds011785.mlab.com:11785/staticapise
 
 var schema = mongoose.Schema
 var userSchema = new schema({
-  users: Array
+  user_data: Object
 })
 mongoose.Promise = require('bluebird')
 module.exports = mongoose.model('user', userSchema)

@@ -16,11 +16,11 @@ router.route('/userList')
   })
   .post((req, res, next) => {
     // lets create our new user.
-    db.create({
-      
-    })
-    console.log(req.body);
-    res.sendStatus(200)
+    db.create(req.body)
+      .then((resp) => {
+        console.log(resp);
+        res.sendStatus(200)
+      })
   })
 router.route('/user/:id')
   .get((req, res, next) => {

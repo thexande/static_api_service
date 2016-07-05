@@ -12,6 +12,8 @@ novalidate)
       | Lets add a new user!
   // Modal Body
   .modal-body
+    .alert.alert-danger(ng-show="formIsNotValid")
+      strong Please Fix User Input!
     .form-group(ng-class="{ 'has-error' : newUserForm.first_name.$invalid && newUserForm.first_name.$touched }")
       label.col-sm-2.control-label(for='first_name') First Name
       .col-sm-10
@@ -49,27 +51,27 @@ novalidate)
       label.col-sm-2.control-label(for='is_active') Is User Active?
       .col-sm-10
         input#is_active(bs-switch
-               type="checkbox"
-               switch-active="{{ isActive }}"
-               switch-on-text="{{ onText }}"
-               switch-off-text="{{ offText }}"
-               switch-on-color="{{ onColor }}"
-               switch-off-color="{{ offColor }}"
-               switch-animate="{{ animate }}"
-               switch-size="{{ size }}"
-               switch-label="{{ label }}"
-               switch-icon="{{ icon }}"
-               switch-radio-off="{{ radioOff }}"
-               switch-label-width="{{ labelWidth }}"
-               switch-handle-width="{{ handleWidth }}"
-               switch-wrapper="{{ wrapper }}"
-               ng-true-value= '1'
-               ng-false-value= '0'
-               ng-model="user.is_active")
-
-// Modal Footer
-.modal-footer
-  button.btn.btn-default(type='button', data-dismiss='modal', ng-click="cancel()")
-    | Close
-  button.btn.btn-success(type="submit")
-    | Create User!
+          type="checkbox"
+          switch-active="{{ isActive }}"
+          switch-on-text="{{ onText }}"
+          switch-off-text="{{ offText }}"
+          switch-on-color="{{ onColor }}"
+          switch-off-color="{{ offColor }}"
+          switch-animate="{{ animate }}"
+          switch-size="{{ size }}"
+          switch-label="{{ label }}"
+          switch-icon="{{ icon }}"
+          switch-radio-off="{{ radioOff }}"
+          switch-label-width="{{ labelWidth }}"
+          switch-handle-width="{{ handleWidth }}"
+          switch-wrapper="{{ wrapper }}"
+          ng-true-value= '1'
+          ng-false-value= '0'
+          ng-model="user.is_active")
+  
+  // Modal Footer
+  .modal-footer {{user}}
+    button.btn.btn-default(type='button', data-dismiss='modal', ng-click="cancel()")
+      | Close
+    button.btn.btn-success(type="submit")
+      | Create User!
