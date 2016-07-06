@@ -19,20 +19,15 @@ table.table.table-striped.table-hover
       th Delete
   tbody
     tr(ng-repeat='user in users')
-      td {{user.user_data.id}}
-        //- input(type="button" class="btn btn-tomato" value="Add" ng-click="addRepoToWatch(repo)")
+      td {{user._id}}
       td {{user.user_data.first_name}}
       td {{user.user_data.last_name}}
-      td {{user.user_data.active}}
+      td(ng-show="user.user_data.active === 1")
+        span.label.label-success active
+      td(ng-show="user.user_data.active === 0")
+        span.label.label-danger inactive
       td {{user.user_data.y_code}}
-      td
-        input.btn.btn-info(type="button" value="Edit")
+      td(ng-controller="ModalUserEditCtrl")
+        input.btn.btn-info(type="button" value="Edit" ng-click="open(user)")
       td
         input.btn.btn-danger(type="button" value="Remove")
-//- modalInstance
-div(ng-controller='ModalDemoCtrl')
-  button.btn.btn-default(type='button', ng-click='open()') Open me!
-  button.btn.btn-default(type='button', ng-click="open('lg')") Large modal
-  button.btn.btn-default(type='button', ng-click="open('sm')") Small modal
-  button.btn.btn-default(type='button', ng-click='toggleAnimation()') Toggle Animation ({{ animationsEnabled }})
-  div(ng-show='selected') Selection from a modal: {{ selected }}

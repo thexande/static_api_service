@@ -17,6 +17,13 @@ angular.module('static.services', [])
           url: "/userList",
           data: user
         })
+      },
+      updateExistingUser: (user) => {
+        return $http({
+          method: "PATCH",
+          url: "/userList",
+          data: user
+        })
       }
     }
   })

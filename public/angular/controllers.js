@@ -8,14 +8,13 @@ angular.module('static.controllers', [])
     $scope.users = staticFactory.getFromLocalStorage('users')
     // watch users in local storage to update
     $scope.$on("LocalStorageModule.notification.setitem", function (key, newVal, type) {
-      console.log("LocalStorageModule.notification.setitem", key, newVal, type);
+      // console.log("LocalStorageModule.notification.setitem", key, newVal, type);
       $scope.users = staticFactory.getFromLocalStorage('users')
-      
+
     })
   })
   .controller('dashController', function($scope, $http, $state, staticFactory){
-    staticFactory.getAllUsers()
-      .then((res) => {
+    staticFactory.getAllUsers().then((res) => {
         // insert data into local storage for retrevial in view
         staticFactory.setToLocalStorage('users', res.data)
       })
@@ -24,24 +23,6 @@ angular.module('static.controllers', [])
     console.log("in User controller");
 
   })
-
-  // modal testing
-  .controller('ModalDemoCtrl', function ($scope, $uibModal, $log) {
-  $scope.animationsEnabled = true;
-  $scope.open = function (size) {
-    var modalInstance = $uibModal.open({
-      animation: $scope.animationsEnabled,
-      templateUrl: 'build/user.html',
-      controller: 'ModalInstanceCtrl',
-      size: size,
-      resolve: {
-        items: function () {
-          return $scope.items;
-        }
-      }
-    })
-  }
-})
 // modal controller for adding a new user
 .controller('ModalUserCreateCtrl', function($scope, $uibModal, $log){
   $scope.animationsEnabled = true;
@@ -59,11 +40,11 @@ angular.module('static.controllers', [])
   $scope.user = {}
   $scope.createNewUser = function(isValid) {
     if(isValid){
-      staticFactory.createNewUser({user_data:$scope.user})
+      staticFactory.createNewUser({user_data: $scope.user})
         .then(function(resp){
           // user created. get list of all users and update in local storage
           staticFactory.getAllUsers().then(function(resp){
-            // reset local storage and
+            // reset local storage
             staticFactory.setToLocalStorage('users', resp.data)
           }).then(() => {
             $scope.cancel()
@@ -81,7 +62,7 @@ angular.module('static.controllers', [])
   $scope.offText = 'Disabled';
   $scope.onColor = 'info'
   $scope.offColor = 'danger'
-  $scope.user.is_active = 1;
+  $scope.user.active = 1;
   $scope.size = 'large';
   $scope.animate = true;
   $scope.radioOff = true;
@@ -89,48 +70,53 @@ angular.module('static.controllers', [])
   $scope.labelWidth = "auto";
   $scope.inverse = false;
 })
-
-.controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, $log, $http) {
-  // form update to create new user
-  $scope.user = {}
-  $scope.createNewUser = function(isValid) {
-    console.log("woot");
-    console.log($scope.user);
-    if(!isValid){
-      alert("invalid")
-    }
-
-    // $scope.user = angular.copy(user)
-    // lets post and create our new user
-    // $http({
-    //   method: "POST",
-    //   url: "/userList",
-    //   data: $scope.user
-    // }).then(function(resp){
-    //   console.log(resp);
-    // })
+// modal controller for adding a editing user
+.controller('ModalUserEditCtrl', function($scope, $uibModal, $log, staticFactory){
+  $scope.animationsEnabled = true;
+  $scope.open = function (user) {
+    // set current editing user in local storage
+    staticFactory.setToLocalStorage('user_edit', user)
+    var modalInstance = $uibModal.open({
+      animation: $scope.animationsEnabled,
+      templateUrl: 'build/edit.html',
+      controller: 'UserEditInstanceCtrl',
+      size: 'lg'
+    })
   }
-  //
-  // $scope.ok = function (user) {
-  //   console.log(user);
-  //   $scope.updateNewUser(user)
-  //   console.log($scope.user);
-  // };
-
+})
+.controller('UserEditInstanceCtrl', function($scope, $uibModalInstance, $log, staticFactory){
+  // form update to edit a user
+  $scope.user = staticFactory.getFromLocalStorage('user_edit')
+  // method to update user in DB
+  $scope.updateUser = function(isValid){
+    if(isValid){
+      staticFactory.updateExistingUser($scope.user)
+      .then((res) => {
+        // user updated. get list of all users and update in local storage
+        staticFactory.getAllUsers().then(function(resp){
+          // reset local storage
+          console.log(resp.data);
+          staticFactory.setToLocalStorage('users', resp.data)
+        }).then(() => {
+          $scope.cancel()
+        })
+      })
+    }
+  }
+  // modal dismiss
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
-  };
+  }
   // bootstrap switch
   $scope.isSelected = 'yep';
   $scope.onText = 'Enabled';
   $scope.offText = 'Disabled';
   $scope.onColor = 'info'
   $scope.offColor = 'danger'
-  $scope.user.is_active = 1;
   $scope.size = 'large';
   $scope.animate = true;
   $scope.radioOff = true;
   $scope.handleWidth = "auto";
   $scope.labelWidth = "auto";
   $scope.inverse = false;
-});
+})

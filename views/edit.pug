@@ -2,7 +2,7 @@
 form#new_user_form.form-horizontal(
 name="newUserForm",
 role='form',
-ng-submit="createNewUser(newUserForm.$valid)",
+ng-submit="updateUser(newUserForm.$valid)",
 novalidate)
   .modal-header
     button.close(type='button', data-dismiss='modal')
@@ -22,7 +22,7 @@ novalidate)
           required,
           type='text',
           placeholder='First Name',
-          ng-model="user.first_name")
+          ng-model="user.user_data.first_name")
         small.text-muted(ng-show="newUserForm.first_name.$invalid && newUserForm.first_name.$touched")
           | Please enter a first name for the user.
     .form-group(ng-class="{ 'has-error' : newUserForm.last_name.$invalid && newUserForm.last_name.$touched }")
@@ -33,7 +33,7 @@ novalidate)
           required,
           type='text',
           placeholder='Last Name',
-          ng-model="user.last_name")
+          ng-model="user.user_data.last_name")
         small.text-muted(ng-show="newUserForm.last_name.$invalid && newUserForm.last_name.$touched")
           | Please enter a last name for the user.
     .form-group(ng-class="{ 'has-error' : newUserForm.y_code.$invalid && newUserForm.y_code.$touched }")
@@ -44,7 +44,7 @@ novalidate)
           required,
           type='text',
           placeholder='Y Code',
-          ng-model="user.y_code")
+          ng-model="user.user_data.y_code")
         small.text-muted(ng-show="newUserForm.y_code.$invalid && newUserForm.y_code.$touched")
           | Please enter a y code for the user.
     .form-group
@@ -67,11 +67,11 @@ novalidate)
           switch-wrapper="{{ wrapper }}"
           ng-true-value= '1'
           ng-false-value= '0'
-          ng-model="user.active")
+          ng-model="user.user_data.active")
 
   // Modal Footer
-  .modal-footer {{user}}
+  .modal-footer
     button.btn.btn-default(type='button', data-dismiss='modal', ng-click="cancel()")
       | Close
     button.btn.btn-success(type="submit")
-      | Create User!
+      | Update User!

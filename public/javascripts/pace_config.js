@@ -3,8 +3,7 @@ window.paceOptions = {
     eventLag: true,
     restartOnPushState: true,
     restartOnRequestAfter: true,
-    // ajax: {
-    //     trackMethods: [ 'POST','GET','PUT','PATCH']
-    // }
-    ajax: true
+    ajax: {
+        trackMethods: [ 'POST','GET','PUT']
+    }
 }
