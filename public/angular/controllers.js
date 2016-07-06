@@ -10,18 +10,32 @@ angular.module('static.controllers', [])
     $scope.$on("LocalStorageModule.notification.setitem", function (key, newVal, type) {
       // console.log("LocalStorageModule.notification.setitem", key, newVal, type);
       $scope.users = staticFactory.getFromLocalStorage('users')
-
     })
   })
-  .controller('dashController', function($scope, $http, $state, staticFactory){
+  .controller('dashController', function($scope, $http, $state, staticFactory, NgTableParams){
+    // attempt at ng-table
+    var self = this
+    self.tableParams = new NgTableParams()
+
     staticFactory.getAllUsers().then((res) => {
-        // insert data into local storage for retrevial in view
-        staticFactory.setToLocalStorage('users', res.data)
+      // insert data into local storage for retrevial in view
+      staticFactory.setToLocalStorage('users', res.data)
+      self.tableParams.settings({
+          dataset: res.data
       })
+    })
+    // method to delete a user
+    $scope.deleteUser = (user) => {
+      staticFactory.deleteUser(user).then(() => {
+        staticFactory.getAllUsers().then((res) => {
+          // insert data into local storage for retrevial in view
+          staticFactory.setToLocalStorage('users', res.data)
+        })
+      })
+    }
   })
   .controller('userController', function($scope, $http, $state, $log, $uibModal){
     console.log("in User controller");
-
   })
 // modal controller for adding a new user
 .controller('ModalUserCreateCtrl', function($scope, $uibModal, $log){
@@ -95,7 +109,6 @@ angular.module('static.controllers', [])
         // user updated. get list of all users and update in local storage
         staticFactory.getAllUsers().then(function(resp){
           // reset local storage
-          console.log(resp.data);
           staticFactory.setToLocalStorage('users', resp.data)
         }).then(() => {
           $scope.cancel()

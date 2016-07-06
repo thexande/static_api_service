@@ -24,6 +24,12 @@ angular.module('static.services', [])
           url: "/userList",
           data: user
         })
+      },
+      deleteUser: (user) => {
+        return $http({
+          method: "DELETE",
+          url: "/user/" + user._id
+        })
       }
     }
   })

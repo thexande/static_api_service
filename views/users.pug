@@ -30,4 +30,4 @@ table.table.table-striped.table-hover
       td(ng-controller="ModalUserEditCtrl")
         input.btn.btn-info(type="button" value="Edit" ng-click="open(user)")
       td
-        input.btn.btn-danger(type="button" value="Remove")
+        input.btn.btn-danger(type="button" value="Delete" ng-click="deleteUser(user)")
